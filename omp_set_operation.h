@@ -87,9 +87,8 @@ template<typename System, typename InputIterator1, typename InputIterator2, type
   // skip empty input
   if(input_size == 0) return result;
 
-  // XXX get the actual number of processors
   const difference num_processors = omp_get_num_procs();
-  const difference min_partition_size = 1 << 20;
+  const difference min_partition_size = 1 << 20; // XXX potentially tune this
 
   // -1 because balanced_path adds a single element to the end of a "starred" partition, increasing its size by one
   const difference maximum_partition_size = thrust::max<difference>(min_partition_size, thrust::detail::util::divide_ri(input_size, num_processors)) - 1;
