@@ -1,6 +1,6 @@
 #pragma once
 
-#include "set_operation.h"
+#include "omp_set_operation.h"
 #include <thrust/set_operations.h>
 #include <thrust/iterator/discard_iterator.h>
 #include <thrust/system/omp/detail/tag.h>

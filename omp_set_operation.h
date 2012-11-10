@@ -84,11 +84,15 @@ template<typename System, typename InputIterator1, typename InputIterator2, type
   const difference n2 = last2 - first2;
   const difference input_size = n1 + n2;
 
-  // skip empty input
-  if(input_size == 0) return result;
+  const difference min_partition_size = 1 << 20; // XXX potentially tune this
+
+  // execute sequentially for small input
+  if(input_size < min_partition_size)
+  {
+    return set_op(first1, last1, first2, last2, result, comp);
+  }
 
   const difference num_processors = omp_get_num_procs();
-  const difference min_partition_size = 1 << 20; // XXX potentially tune this
 
   // -1 because balanced_path adds a single element to the end of a "starred" partition, increasing its size by one
   const difference maximum_partition_size = thrust::max<difference>(min_partition_size, thrust::detail::util::divide_ri(input_size, num_processors)) - 1;
